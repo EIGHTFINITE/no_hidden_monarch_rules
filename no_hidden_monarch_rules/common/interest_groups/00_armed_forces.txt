@@ -116,29 +116,27 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				is_marginal = yes
+				owner.ig:ig_armed_forces = {
+					OR = {
+						is_marginal = yes
+						AND = {
+							is_in_government = no
+							ig_clout < 0.04
+						}
+					}
+				}
 			}
 			multiply = {
-				value = 0.1
+				value = 0
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				is_powerful = yes
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# Monarch more likely to be Armed Forces under an autocratic or oligarchic regime
-		if = {
-			limit = {
-				owner = {
+				owner.ig:ig_armed_forces = {
 					OR = {
-						has_law = law_type:law_oligarchy
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_single_party_state
+						is_powerful = yes
+						ig_clout > 0.2
 					}
 				}
 			}
@@ -146,32 +144,185 @@
 				value = 2
 			}
 		}
-		# Monarch is less likely to be Armed forces in a democratic monarchy
+		# In government
 		if = {
 			limit = {
-				owner = {
-					OR = {
-						has_law = law_type:law_universal_suffrage
-						has_law = law_type:law_census_voting
-					}
+				owner.ig:ig_armed_forces = {
+					is_in_government = yes
 				}
 			}
 			multiply = {
-				value = 0.5
+				value = 1.05
 			}
 		}
-		# Less likely without Professional Army or Mass Conscription
+		# From 10% clout
 		if = {
 			limit = {
-				owner = {
-					NOR = {
-						has_law = law_type:law_professional_army
-						has_law = law_type:law_mass_conscription
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.1
+						ig_clout < 0.2
 					}
 				}
 			}
 			multiply = {
-				value = 0.5
+				value = 1.1
+			}
+		}
+		# From 20% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.2
+						ig_clout < 0.3
+					}
+				}
+			}
+			multiply = {
+				value = 1.2
+			}
+		}
+		# From 30% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.3
+						ig_clout < 0.4
+					}
+				}
+			}
+			multiply = {
+				value = 1.3
+			}
+		}
+		# From 40% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.4
+						ig_clout < 0.5
+					}
+				}
+			}
+			multiply = {
+				value = 1.4
+			}
+		}
+		# From 50% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.5
+						ig_clout < 0.6
+					}
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
+		# From 60% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.6
+						ig_clout < 0.7
+					}
+				}
+			}
+			multiply = {
+				value = 1.6
+			}
+		}
+		# From 70% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.7
+						ig_clout < 0.8
+					}
+				}
+			}
+			multiply = {
+				value = 1.7
+			}
+		}
+		# From 80% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.8
+						ig_clout < 0.9
+					}
+				}
+			}
+			multiply = {
+				value = 1.8
+			}
+		}
+		# From 90% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					AND = {
+						ig_clout >= 0.9
+						ig_clout < 1
+					}
+				}
+			}
+			multiply = {
+				value = 1.9
+			}
+		}
+		# From 100% clout
+		if = {
+			limit = {
+				owner.ig:ig_armed_forces = {
+					ig_clout >= 1
+				}
+			}
+			multiply = {
+				value = 2
+			}
+		}
+		# More likely with Professional Army
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_professional_army
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
+		# Less likely with National Militia
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_national_militia
+				}
+			}
+			multiply = {
+				value = 0.75
+			}
+		}
+		# More likely with Militarized Police Force
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_militarized_police
+				}
+			}
+			multiply = {
+				value = 1.5
 			}
 		}
 	}

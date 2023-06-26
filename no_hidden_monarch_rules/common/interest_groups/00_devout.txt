@@ -178,20 +178,181 @@
 	}
 
 	monarch_weight = {
-		value = 1.0
+		value = 1
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				is_marginal = yes
+				owner.ig:ig_devout = {
+					OR = {
+						is_marginal = yes
+						AND = {
+							is_in_government = no
+							ig_clout < 0.04
+						}
+					}
+				}
 			}
 			multiply = {
-				value = 0.1
+				value = 0
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				is_powerful = yes
+				owner.ig:ig_devout = {
+					OR = {
+						is_powerful = yes
+						ig_clout > 0.2
+					}
+				}
+			}
+			multiply = {
+				value = 2
+			}
+		}
+		# In government
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					is_in_government = yes
+				}
+			}
+			multiply = {
+				value = 1.05
+			}
+		}
+		# From 10% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.1
+						ig_clout < 0.2
+					}
+				}
+			}
+			multiply = {
+				value = 1.1
+			}
+		}
+		# From 20% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.2
+						ig_clout < 0.3
+					}
+				}
+			}
+			multiply = {
+				value = 1.2
+			}
+		}
+		# From 30% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.3
+						ig_clout < 0.4
+					}
+				}
+			}
+			multiply = {
+				value = 1.3
+			}
+		}
+		# From 40% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.4
+						ig_clout < 0.5
+					}
+				}
+			}
+			multiply = {
+				value = 1.4
+			}
+		}
+		# From 50% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.5
+						ig_clout < 0.6
+					}
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
+		# From 60% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.6
+						ig_clout < 0.7
+					}
+				}
+			}
+			multiply = {
+				value = 1.6
+			}
+		}
+		# From 70% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.7
+						ig_clout < 0.8
+					}
+				}
+			}
+			multiply = {
+				value = 1.7
+			}
+		}
+		# From 80% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.8
+						ig_clout < 0.9
+					}
+				}
+			}
+			multiply = {
+				value = 1.8
+			}
+		}
+		# From 90% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					AND = {
+						ig_clout >= 0.9
+						ig_clout < 1
+					}
+				}
+			}
+			multiply = {
+				value = 1.9
+			}
+		}
+		# From 100% clout
+		if = {
+			limit = {
+				owner.ig:ig_devout = {
+					ig_clout >= 1
+				}
 			}
 			multiply = {
 				value = 2
@@ -205,21 +366,32 @@
 				}
 			}
 			multiply = {
-				value = 2
+				value = 1.3
 			}
 		}
-		# Less likely without State Religion
+		# More likely with Theocracy
 		if = {
 			limit = {
 				owner = {
-					NOT = { has_law = law_type:law_state_religion }
+					has_law = law_type:law_theocracy
 				}
 			}
 			multiply = {
-				value = 0.25
+				value = 1.25
 			}
 		}
-		# Basically impossible with State Atheism
+		# More likely with Freedom of Conscience
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_freedom_of_conscience
+				}
+			}
+			multiply = {
+				value = 1.15
+			}
+		}
+		# Less likely with with State Atheism
 		if = {
 			limit = {
 				owner = {
@@ -227,7 +399,29 @@
 				}
 			}
 			multiply = {
-				value = 0
+				value = 0.5
+			}
+		}
+		# More likely with Religious Schools
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_religious_schools
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
+		# More likely with Charity Hospitals
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_charitable_health_system
+				}
+			}
+			multiply = {
+				value = 1.5
 			}
 		}
 		# Muslims and Theravada more likely to adopt Devout

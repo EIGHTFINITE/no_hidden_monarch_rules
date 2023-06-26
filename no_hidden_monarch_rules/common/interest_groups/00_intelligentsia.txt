@@ -196,30 +196,180 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				is_marginal = yes
+				owner.ig:ig_intelligentsia = {
+					OR = {
+						is_marginal = yes
+						AND = {
+							is_in_government = no
+							ig_clout < 0.04
+						}
+					}
+				}
 			}
 			multiply = {
-				value = 0.1
+				value = 0
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				is_powerful = yes
+				owner.ig:ig_intelligentsia = {
+					OR = {
+						is_powerful = yes
+						ig_clout > 0.2
+					}
+				}
 			}
 			multiply = {
 				value = 2
 			}
 		}
-		# Much more likely with Technocracy
+		# In government
 		if = {
 			limit = {
-				owner = {
-					has_law = law_type:law_technocracy
+				owner.ig:ig_intelligentsia = {
+					is_in_government = yes
 				}
 			}
 			multiply = {
-				value = 3
+				value = 1.05
+			}
+		}
+		# From 10% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.1
+						ig_clout < 0.2
+					}
+				}
+			}
+			multiply = {
+				value = 1.1
+			}
+		}
+		# From 20% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.2
+						ig_clout < 0.3
+					}
+				}
+			}
+			multiply = {
+				value = 1.2
+			}
+		}
+		# From 30% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.3
+						ig_clout < 0.4
+					}
+				}
+			}
+			multiply = {
+				value = 1.3
+			}
+		}
+		# From 40% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.4
+						ig_clout < 0.5
+					}
+				}
+			}
+			multiply = {
+				value = 1.4
+			}
+		}
+		# From 50% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.5
+						ig_clout < 0.6
+					}
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
+		# From 60% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.6
+						ig_clout < 0.7
+					}
+				}
+			}
+			multiply = {
+				value = 1.6
+			}
+		}
+		# From 70% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.7
+						ig_clout < 0.8
+					}
+				}
+			}
+			multiply = {
+				value = 1.7
+			}
+		}
+		# From 80% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.8
+						ig_clout < 0.9
+					}
+				}
+			}
+			multiply = {
+				value = 1.8
+			}
+		}
+		# From 90% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					AND = {
+						ig_clout >= 0.9
+						ig_clout < 1
+					}
+				}
+			}
+			multiply = {
+				value = 1.9
+			}
+		}
+		# From 100% clout
+		if = {
+			limit = {
+				owner.ig:ig_intelligentsia = {
+					ig_clout >= 1
+				}
+			}
+			multiply = {
+				value = 2
 			}
 		}
 		# More likely with Appointed Bureaucrats
@@ -227,6 +377,17 @@
 			limit = {
 				owner = {
 					has_law = law_type:law_appointed_bureaucrats
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
+		# More likely with Private Schools
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_private_schools
 				}
 			}
 			multiply = {
@@ -241,7 +402,7 @@
 				}
 			}
 			multiply = {
-				value = 0
+				value = 0.1
 			}
 		}
 	}
