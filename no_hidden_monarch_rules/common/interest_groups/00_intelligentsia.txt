@@ -196,13 +196,11 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					OR = {
-						is_marginal = yes
-						AND = {
-							is_in_government = no
-							ig_clout < 0.04
-						}
+				OR = {
+					is_marginal = yes
+					AND = {
+						is_in_government = no
+						ig_clout < 0.04
 					}
 				}
 			}
@@ -213,11 +211,9 @@
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					OR = {
-						is_powerful = yes
-						ig_clout > 0.2
-					}
+				OR = {
+					is_powerful = yes
+					ig_clout > 0.2
 				}
 			}
 			multiply = {
@@ -227,9 +223,7 @@
 		# In government
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					is_in_government = yes
-				}
+				is_in_government = yes
 			}
 			multiply = {
 				value = 1.05
@@ -238,11 +232,9 @@
 		# From 10% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.1
-						ig_clout < 0.2
-					}
+				AND = {
+					ig_clout >= 0.1
+					ig_clout < 0.2
 				}
 			}
 			multiply = {
@@ -252,11 +244,9 @@
 		# From 20% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.2
-						ig_clout < 0.3
-					}
+				AND = {
+					ig_clout >= 0.2
+					ig_clout < 0.3
 				}
 			}
 			multiply = {
@@ -266,11 +256,9 @@
 		# From 30% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.3
-						ig_clout < 0.4
-					}
+				AND = {
+					ig_clout >= 0.3
+					ig_clout < 0.4
 				}
 			}
 			multiply = {
@@ -280,11 +268,9 @@
 		# From 40% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.4
-						ig_clout < 0.5
-					}
+				AND = {
+					ig_clout >= 0.4
+					ig_clout < 0.5
 				}
 			}
 			multiply = {
@@ -294,11 +280,9 @@
 		# From 50% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.5
-						ig_clout < 0.6
-					}
+				AND = {
+					ig_clout >= 0.5
+					ig_clout < 0.6
 				}
 			}
 			multiply = {
@@ -308,11 +292,9 @@
 		# From 60% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.6
-						ig_clout < 0.7
-					}
+				AND = {
+					ig_clout >= 0.6
+					ig_clout < 0.7
 				}
 			}
 			multiply = {
@@ -322,11 +304,9 @@
 		# From 70% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.7
-						ig_clout < 0.8
-					}
+				AND = {
+					ig_clout >= 0.7
+					ig_clout < 0.8
 				}
 			}
 			multiply = {
@@ -336,11 +316,9 @@
 		# From 80% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.8
-						ig_clout < 0.9
-					}
+				AND = {
+					ig_clout >= 0.8
+					ig_clout < 0.9
 				}
 			}
 			multiply = {
@@ -350,11 +328,9 @@
 		# From 90% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					AND = {
-						ig_clout >= 0.9
-						ig_clout < 1
-					}
+				AND = {
+					ig_clout >= 0.9
+					ig_clout < 1
 				}
 			}
 			multiply = {
@@ -364,9 +340,7 @@
 		# From 100% clout
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					ig_clout >= 1
-				}
+				ig_clout >= 1
 			}
 			multiply = {
 				value = 2
