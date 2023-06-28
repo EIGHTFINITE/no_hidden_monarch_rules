@@ -255,22 +255,10 @@
 		# From 90% clout
 		if = {
 			limit = {
-				AND = {
-					ig_clout >= 0.9
-					ig_clout < 1
-				}
+				ig_clout >= 0.9
 			}
 			multiply = {
 				value = 1.9
-			}
-		}
-		# From 100% clout
-		if = {
-			limit = {
-				ig_clout >= 1
-			}
-			multiply = {
-				value = 2
 			}
 		}
 		# More likely with Industry Banned
