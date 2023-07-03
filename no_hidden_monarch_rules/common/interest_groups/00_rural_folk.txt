@@ -165,7 +165,7 @@
 				}
 			}
 			multiply = {
-				value = 1.1
+				value = 1.2
 			}
 		}
 		# From 20% clout
@@ -177,7 +177,7 @@
 				}
 			}
 			multiply = {
-				value = 1.2
+				value = 1.4
 			}
 		}
 		# From 30% clout
@@ -189,7 +189,7 @@
 				}
 			}
 			multiply = {
-				value = 1.3
+				value = 1.6
 			}
 		}
 		# From 40% clout
@@ -201,7 +201,7 @@
 				}
 			}
 			multiply = {
-				value = 1.4
+				value = 1.8
 			}
 		}
 		# From 50% clout
@@ -213,7 +213,7 @@
 				}
 			}
 			multiply = {
-				value = 1.5
+				value = 2
 			}
 		}
 		# From 60% clout
@@ -225,7 +225,7 @@
 				}
 			}
 			multiply = {
-				value = 1.6
+				value = 2.2
 			}
 		}
 		# From 70% clout
@@ -237,7 +237,7 @@
 				}
 			}
 			multiply = {
-				value = 1.7
+				value = 2.4
 			}
 		}
 		# From 80% clout
@@ -249,7 +249,7 @@
 				}
 			}
 			multiply = {
-				value = 1.8
+				value = 2.6
 			}
 		}
 		# From 90% clout
@@ -258,7 +258,7 @@
 				ig_clout >= 0.9
 			}
 			multiply = {
-				value = 1.9
+				value = 2.8
 			}
 		}
 		# More likely with Industry Banned
