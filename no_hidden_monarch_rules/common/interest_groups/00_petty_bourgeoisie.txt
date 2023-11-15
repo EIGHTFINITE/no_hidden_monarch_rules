@@ -23,9 +23,52 @@
 	
 	on_enable = {
 		ig:ig_petty_bourgeoisie = {
-			set_ig_trait = ig_trait:ig_trait_xenophobia
-			set_ig_trait = ig_trait:ig_trait_middle_managers
-			set_ig_trait = ig_trait:ig_trait_treasury_bonds
+			if = {
+				limit = {
+					owner = { c:SWE ?= this}
+				}
+				set_ig_trait = ig_trait:ig_trait_xenophobia
+				set_ig_trait = ig_trait:ig_trait_bergsbrukens_valdistrikten
+				set_ig_trait = ig_trait:ig_trait_treasury_bonds
+			}
+			else_if = {
+				limit = {
+					owner = { c:TUR ?= this }
+				}
+						set_ig_trait = ig_trait:ig_trait_xenophobia
+						set_ig_trait = ig_trait:ig_trait_effendi
+						set_ig_trait = ig_trait:ig_trait_reorganization
+			}
+			else_if = {
+				limit = {
+					owner = { c:EGY ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_xenophobia
+				set_ig_trait = ig_trait:ig_trait_effendi
+				set_ig_trait = ig_trait:ig_trait_treasury_bonds
+			}
+			else_if = {
+				limit = {
+					has_dlc_feature = voice_of_the_people_content
+					owner = { c:FRA ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_xenophobia
+				set_ig_trait = ig_trait:ig_trait_haute_finance
+				set_ig_trait = ig_trait:ig_trait_master_of_the_house
+			}
+			else_if = {
+				limit = {
+					owner = { c:GBR ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_bah_humbug
+				set_ig_trait = ig_trait:ig_trait_civil_service
+				set_ig_trait = ig_trait:ig_trait_old_lady_of_threadneedle_street
+			}
+			else = {
+				set_ig_trait = ig_trait:ig_trait_xenophobia
+				set_ig_trait = ig_trait:ig_trait_middle_managers
+				set_ig_trait = ig_trait:ig_trait_treasury_bonds
+			}
 		}
 	}
 
@@ -43,11 +86,28 @@
 			pop_employment_building_group = bg_service
 			pop_employment_building_group = bg_urban_facilities
 			pop_employment_building_group = bg_government
+			AND = {
+				custom_tooltip = {
+					text = owner_has_homesteading_tt
+					owner = {
+						OR = {
+							has_law = law_type:law_homesteading
+							has_law = law_type:law_commercialized_agriculture
+						}
+					}
+				}
+				OR = {
+					pop_employment_building_group = bg_agriculture
+					pop_employment_building_group = bg_ranching
+					pop_employment_building_group = bg_plantations
+				}
+				strata = middle
+			}
 		}
 	}
 
 	pop_weight = {
-		value = 75
+		value = 50
 
 		add = {
 			desc = "POP_SHOPKEEPERS"
@@ -55,7 +115,7 @@
 				limit = {
 					is_pop_type = shopkeepers
 				}
-				value = 200
+				value = 250
 			}
 		}
 
@@ -65,14 +125,77 @@
 				limit = {
 					is_pop_type = clerks
 				}
+				value = 100
+			}
+		}
+
+		add = {
+			desc = "POP_ENGINEERS"
+			if = {
+				limit = {
+					is_pop_type = engineers
+				}
 				value = 50
+			}
+		}
+
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_elected_bureaucrats
+				}
+			}
+			add = {
+				desc = "POP_BUREAUCRATS_ELECTED"
+				if = {
+					limit = {
+						is_pop_type = bureaucrats
+					}
+					value = 50
+				}
+			}
+		}
+
+		add = {
+			desc = "HOMESTEADING_LAW"
+			if = {
+				limit = {
+					is_pop_type = farmers
+					owner = {
+						has_law = law_type:law_homesteading
+					}
+				}
+				value = 25
+
+				if = {
+					limit = {
+						state = {
+							is_slave_state = yes
+						}
+					}
+					subtract = 25
+				}
+			}
+		}
+
+		add = {
+			desc = "URBAN_POP"
+			if = {
+				limit = {
+					NOR = {
+						pop_employment_building_group = bg_agriculture
+						pop_employment_building_group = bg_ranching
+						pop_employment_building_group = bg_plantations
+					}
+				}
+				value = 25
 			}
 		}
 
 		multiply = {
 			desc = "LEADER_POPULARITY"
 			scope:interest_group = {
-				leader = {
+				leader ?= {
 					value = popularity
 					multiply = 0.0025
 					add = 1
@@ -108,6 +231,33 @@
 				min = 0
 			}
 		}
+		
+		if = {
+			limit = {
+				scope:interest_group = {
+					is_in_government = yes
+				}
+			}
+			multiply = { # Multiplied by 1.25x max
+				desc = "POP_LOYALISTS"
+				value = pop_loyalist_fraction
+				divide = 4
+				add = 1
+			}
+		}
+		if = {
+			limit = {
+				scope:interest_group = {
+					is_in_government = no
+				}
+			}
+			multiply = { # Multiplied by 1.25x max
+				desc = "POP_RADICALS"
+				value = pop_radical_fraction
+				divide = 4
+				add = 1
+			}
+		}
 	}
 
 	monarch_weight = {
@@ -115,142 +265,19 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				OR = {
-					is_marginal = yes
-					AND = {
-						is_in_government = no
-						ig_clout < 0.04
-					}
-				}
+				is_marginal = yes
 			}
 			multiply = {
-				value = 0
+				value = 0.1
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				OR = {
-					is_powerful = yes
-					ig_clout > 0.2
-				}
+				is_powerful = yes
 			}
 			multiply = {
 				value = 2
-			}
-		}
-		# In government
-		if = {
-			limit = {
-				is_in_government = yes
-			}
-			multiply = {
-				value = 1.05
-			}
-		}
-		# From 10% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.1
-					ig_clout < 0.2
-				}
-			}
-			multiply = {
-				value = 1.2
-			}
-		}
-		# From 20% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.2
-					ig_clout < 0.3
-				}
-			}
-			multiply = {
-				value = 1.4
-			}
-		}
-		# From 30% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.3
-					ig_clout < 0.4
-				}
-			}
-			multiply = {
-				value = 1.6
-			}
-		}
-		# From 40% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.4
-					ig_clout < 0.5
-				}
-			}
-			multiply = {
-				value = 1.8
-			}
-		}
-		# From 50% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.5
-					ig_clout < 0.6
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# From 60% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.6
-					ig_clout < 0.7
-				}
-			}
-			multiply = {
-				value = 2.2
-			}
-		}
-		# From 70% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.7
-					ig_clout < 0.8
-				}
-			}
-			multiply = {
-				value = 2.4
-			}
-		}
-		# From 80% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.8
-					ig_clout < 0.9
-				}
-			}
-			multiply = {
-				value = 2.6
-			}
-		}
-		# From 90% clout
-		if = {
-			limit = {
-				ig_clout >= 0.9
-			}
-			multiply = {
-				value = 2.8
 			}
 		}
 		# More likely with Elected Bureaucrats
@@ -261,7 +288,18 @@
 				}
 			}
 			multiply = {
-				value = 1.25
+				value = 1.5
+			}
+		}
+		# More likely with ethnostate
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_ethnostate
+				}
+			}
+			multiply = {
+				value = 2
 			}
 		}
 	}

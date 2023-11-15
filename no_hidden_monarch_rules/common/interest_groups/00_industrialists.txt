@@ -23,9 +23,45 @@
 	
 	on_enable = {
 		ig:ig_industrialists = {
-			set_ig_trait = ig_trait:ig_trait_tax_avoidance
-			set_ig_trait = ig_trait:ig_trait_engines_of_progress
-			set_ig_trait = ig_trait:ig_trait_job_creators
+			if = {
+				limit = {
+					owner = { c:JAP ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_zaibatsu_withdrawal
+				set_ig_trait = ig_trait:ig_trait_engines_of_progress
+				set_ig_trait = ig_trait:ig_trait_zaibatsu_cooperation
+			}
+			else_if = {
+				limit = {
+					owner = { c:SWE ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_tax_avoidance
+				set_ig_trait = ig_trait:ig_trait_engines_of_progress
+				set_ig_trait = ig_trait:ig_trait_kommerskollegium
+			}
+			else_if = {
+				limit = {
+					has_dlc_feature = voice_of_the_people_content
+					owner = { c:FRA ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_tax_avoidance
+				set_ig_trait = ig_trait:ig_trait_engines_of_progress
+				set_ig_trait = ig_trait:ig_trait_ventilate_unify_beautify
+			}
+			else_if = {
+				limit = {
+					has_dlc_feature = rp1_content
+					owner = { c:BRZ ?= this }
+				}
+				set_ig_trait = ig_trait:ig_trait_tax_avoidance
+				set_ig_trait = ig_trait:ig_trait_the_goods_must_flow
+				set_ig_trait = ig_trait:ig_trait_job_creators
+			}
+			else = {
+				set_ig_trait = ig_trait:ig_trait_tax_avoidance
+				set_ig_trait = ig_trait:ig_trait_engines_of_progress
+				set_ig_trait = ig_trait:ig_trait_job_creators
+			}
 		}
 	}
 
@@ -49,7 +85,8 @@
 				limit = {
 					is_pop_type = capitalists
 				}
-				value = 200
+				value = 250
+				add = this.standard_of_living
 			}
 		}
 
@@ -60,6 +97,7 @@
 					is_pop_type = engineers
 				}
 				value = 50
+				add = this.standard_of_living
 			}
 		}
 
@@ -70,13 +108,14 @@
 					is_pop_type = shopkeepers
 				}
 				value = 50
+				add = this.standard_of_living
 			}
 		}
 
 		multiply = {
 			desc = "LEADER_POPULARITY"
 			scope:interest_group = {
-				leader = {
+				leader ?= {
 					value = popularity
 					multiply = 0.0025
 					add = 1
@@ -112,6 +151,33 @@
 				min = 0
 			}
 		}
+		
+		if = {
+			limit = {
+				scope:interest_group = {
+					is_in_government = yes
+				}
+			}
+			multiply = { # Multiplied by 1.25x max
+				desc = "POP_LOYALISTS"
+				value = pop_loyalist_fraction
+				divide = 4
+				add = 1
+			}
+		}
+		if = {
+			limit = {
+				scope:interest_group = {
+					is_in_government = no
+				}
+			}
+			multiply = { # Multiplied by 1.25x max
+				desc = "POP_RADICALS"
+				value = pop_radical_fraction
+				divide = 4
+				add = 1
+			}
+		}
 	}
 
 	monarch_weight = {
@@ -119,142 +185,55 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				OR = {
-					is_marginal = yes
-					AND = {
-						is_in_government = no
-						ig_clout < 0.04
-					}
-				}
+				is_marginal = yes
 			}
 			multiply = {
-				value = 0
+				value = 0.1
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				OR = {
-					is_powerful = yes
-					ig_clout > 0.2
+				is_powerful = yes
+			}
+			multiply = {
+				value = 2
+			}
+		}
+		# More likely with Wealth Voting or Oligarchy
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_law = law_type:law_oligarchy
+						has_law = law_type:law_wealth_voting
+					}
 				}
 			}
 			multiply = {
 				value = 2
 			}
 		}
-		# In government
+		# Slightly more likely with LF
 		if = {
 			limit = {
-				is_in_government = yes
-			}
-			multiply = {
-				value = 1.05
-			}
-		}
-		# From 10% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.1
-					ig_clout < 0.2
+				owner = {
+					has_law = law_type:law_laissez_faire
 				}
 			}
 			multiply = {
-				value = 1.2
+				value = 1.25
 			}
 		}
-		# From 20% clout
+		# Less likely before researching Mutual Funds
 		if = {
 			limit = {
-				AND = {
-					ig_clout >= 0.2
-					ig_clout < 0.3
+				owner = {
+					NOT = { has_technology_researched = mutual_funds }
 				}
 			}
 			multiply = {
-				value = 1.4
-			}
-		}
-		# From 30% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.3
-					ig_clout < 0.4
-				}
-			}
-			multiply = {
-				value = 1.6
-			}
-		}
-		# From 40% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.4
-					ig_clout < 0.5
-				}
-			}
-			multiply = {
-				value = 1.8
-			}
-		}
-		# From 50% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.5
-					ig_clout < 0.6
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# From 60% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.6
-					ig_clout < 0.7
-				}
-			}
-			multiply = {
-				value = 2.2
-			}
-		}
-		# From 70% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.7
-					ig_clout < 0.8
-				}
-			}
-			multiply = {
-				value = 2.4
-			}
-		}
-		# From 80% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.8
-					ig_clout < 0.9
-				}
-			}
-			multiply = {
-				value = 2.6
-			}
-		}
-		# From 90% clout
-		if = {
-			limit = {
-				ig_clout >= 0.9
-			}
-			multiply = {
-				value = 2.8
+				value = 0.5
 			}
 		}
 		# Impossible without Currency Standards
@@ -265,7 +244,7 @@
 				}
 			}
 			multiply = {
-				value = 0.1
+				value = 0
 			}
 		}
 	}
