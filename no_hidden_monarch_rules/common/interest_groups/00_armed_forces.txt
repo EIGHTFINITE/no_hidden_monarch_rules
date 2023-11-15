@@ -296,62 +296,28 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				is_marginal = yes
+				OR = {
+					is_marginal = yes
+					AND = {
+						is_in_government = no
+						ig_clout < 0.04
+					}
+				}
 			}
 			multiply = {
-				value = 0.1
+				value = 0
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				is_powerful = yes
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# Monarch more likely to be Armed Forces under an autocratic or oligarchic regime
-		if = {
-			limit = {
-				owner = {
-					OR = {
-						has_law = law_type:law_oligarchy
-						has_law = law_type:law_autocracy
-						has_law = law_type:law_single_party_state
-					}
+				OR = {
+					is_powerful = yes
+					ig_clout > 0.2
 				}
 			}
 			multiply = {
 				value = 2
-			}
-		}
-		# Monarch is less likely to be Armed forces in a democratic monarchy
-		if = {
-			limit = {
-				owner = {
-					OR = {
-						has_law = law_type:law_universal_suffrage
-						has_law = law_type:law_census_voting
-					}
-				}
-			}
-			multiply = {
-				value = 0.5
-			}
-		}
-		# Less likely without Professional Army or Mass Conscription
-		if = {
-			limit = {
-				owner = {
-					NOR = {
-						has_law = law_type:law_professional_army
-						has_law = law_type:law_mass_conscription
-					}
-				}
-			}
-			multiply = {
-				value = 0.5
 			}
 		}
 	}
