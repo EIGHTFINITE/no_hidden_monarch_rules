@@ -569,6 +569,28 @@
 				value = 6
 			}
 		}
+		# More likely with Caste System Enforced
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_hindu_caste_enforced
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
+		# More likely with Caste System Codified
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_hindu_caste_codified
+				}
+			}
+			multiply = {
+				value = 1.15
+			}
+		}
 		# More likely with Serfdom
 		if = {
 			limit = {
