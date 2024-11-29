@@ -413,6 +413,17 @@
 				value = 6
 			}
 		}
+		# More likely with Council Republic
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_council_republic
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
 	}
 
 	agitator_weight = {

@@ -550,6 +550,92 @@
 				value = 6
 			}
 		}
+		# More likely with Corporate State
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_corporate_state
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
+		# More likely with Private Health Insurance (Level 1)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_private_health_insurance
+					NOT = { institution_investment_level = {
+						institution = institution_health_system
+						value > 1
+					} }
+				}
+			}
+			multiply = {
+				value = 1.1
+			}
+		}
+		# More likely with Private Health Insurance (Level 2)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_private_health_insurance
+					institution_investment_level = {
+						institution = institution_health_system
+						value = 2
+					}
+				}
+			}
+			multiply = {
+				value = 1.2
+			}
+		}
+		# More likely with Private Health Insurance (Level 3)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_private_health_insurance
+					institution_investment_level = {
+						institution = institution_health_system
+						value = 3
+					}
+				}
+			}
+			multiply = {
+				value = 1.3
+			}
+		}
+		# More likely with Private Health Insurance (Level 4)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_private_health_insurance
+					institution_investment_level = {
+						institution = institution_health_system
+						value = 4
+					}
+				}
+			}
+			multiply = {
+				value = 1.4
+			}
+		}
+		# More likely with Private Health Insurance (Level 5)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_private_health_insurance
+					institution_investment_level = {
+						institution = institution_health_system
+						value > 4
+					}
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
 	}
 
 	agitator_weight = {

@@ -476,6 +476,17 @@
 				value = 6
 			}
 		}
+		# More likely with Industry Banned
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_industry_banned
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
 	}
 
 	agitator_weight = {
