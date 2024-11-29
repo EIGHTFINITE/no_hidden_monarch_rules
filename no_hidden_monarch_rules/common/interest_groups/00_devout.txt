@@ -661,6 +661,132 @@
 				value = 2
 			}
 		}
+		# In government
+		if = {
+			limit = {
+				is_in_government = no
+			}
+			multiply = {
+				value = 0.9
+			}
+		}
+		# From 10% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.1
+					ig_clout < 0.2
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
+		# From 20% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.2
+					ig_clout < 0.3
+				}
+			}
+			multiply = {
+				value = 2
+			}
+		}
+		# From 30% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.3
+					ig_clout < 0.4
+				}
+			}
+			multiply = {
+				value = 2.5
+			}
+		}
+		# From 40% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.4
+					ig_clout < 0.5
+				}
+			}
+			multiply = {
+				value = 3
+			}
+		}
+		# From 50% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.5
+					ig_clout < 0.6
+				}
+			}
+			multiply = {
+				value = 3.5
+			}
+		}
+		# From 60% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.6
+					ig_clout < 0.7
+				}
+			}
+			multiply = {
+				value = 4
+			}
+		}
+		# From 70% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.7
+					ig_clout < 0.8
+				}
+			}
+			multiply = {
+				value = 4.5
+			}
+		}
+		# From 80% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.8
+					ig_clout < 0.9
+				}
+			}
+			multiply = {
+				value = 5
+			}
+		}
+		# From 90% clout
+		if = {
+			limit = {
+				AND = {
+					ig_clout >= 0.9
+					ig_clout < 0.95
+				}
+			}
+			multiply = {
+				value = 5.5
+			}
+		}
+		# From 95% clout
+		if = {
+			limit = {
+				ig_clout >= 0.95
+			}
+			multiply = {
+				value = 6
+			}
+		}
 	}
 
 	agitator_weight = {
