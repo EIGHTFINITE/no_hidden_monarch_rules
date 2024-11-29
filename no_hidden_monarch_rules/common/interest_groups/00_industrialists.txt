@@ -9,6 +9,14 @@
 		ideology_laissez_faire
 		ideology_individualist
 	}
+	
+	character_ideologies = {
+		ideology_moderate
+		ideology_market_liberal
+		ideology_protectionist
+		ideology_orleanist
+		ideology_bonapartist
+	}
 
 	enable = {
 		always = yes
@@ -57,6 +65,37 @@
 				set_ig_trait = ig_trait:ig_trait_the_goods_must_flow
 				set_ig_trait = ig_trait:ig_trait_job_creators
 			}
+			# India
+			else_if = {
+				limit = {
+					owner = {
+						c:BIC ?= this
+					}
+				}
+				set_interest_group_name = ig_east_india_company
+				remove_ideology = ideology_laissez_faire
+				add_ideology = ideology_colonialist
+				remove_ideology = ideology_plutocratic
+				add_ideology = ideology_enclavist
+				remove_ideology = ideology_individualist
+				add_ideology = ideology_malthusian
+
+				set_ig_trait = ig_trait:ig_trait_wounded_honor
+				set_ig_trait = ig_trait:ig_trait_stamped_and_signed
+				set_ig_trait = ig_trait:ig_trait_responsible_government
+			}
+			else_if = {
+				limit = {
+					owner = {
+						OR = {
+							c:BIC ?= this
+							c:ALK ?= this
+						}
+					}
+				}
+				remove_ideology = ideology_laissez_faire
+				add_ideology = ideology_colonialist
+			}
 			else = {
 				set_ig_trait = ig_trait:ig_trait_tax_avoidance
 				set_ig_trait = ig_trait:ig_trait_engines_of_progress
@@ -66,6 +105,21 @@
 	}
 
 	on_disable = {}
+
+	priority_cultures = { #Country scope
+		rule = {
+			trigger = {
+				c:BIC ?= this
+				any_primary_culture = { 
+					cu:british = this
+				}
+			}
+			cultures = {
+				british scottish irish
+			}
+		}
+	}
+
 	on_character_ig_membership = {}
 
 	pop_potential = {
@@ -73,6 +127,17 @@
 			is_pop_type = capitalists
 			is_pop_type = engineers
 			is_pop_type = shopkeepers
+			AND = {
+				exists = c:BIC
+				owner ?= c:BIC
+				OR = {
+					culture ?= {
+						has_discrimination_trait = european_heritage
+					}
+					is_pop_type = bureaucrats
+					is_pop_type = clerks
+				}
+			}
 		}
 	}
 
@@ -109,6 +174,69 @@
 				}
 				value = 50
 				add = this.standard_of_living
+			}
+		}
+		if = {
+			limit = {
+				owner = {
+					c:BIC ?= this
+				}
+				culture = {
+					has_discrimination_trait = european_heritage
+				}
+				OR = {
+					strata = upper
+					strata = middle
+				}
+				NOT = {
+					is_pop_type = officers
+				}
+			}
+			add = {
+				desc = "POP_INDIA_EUROPEAN_ADMINISTRATORS"
+				value = 250
+			}
+		}
+		
+		if = {
+			limit = {
+				owner = {
+					c:BIC ?= this
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						culture = {
+							has_discrimination_trait = european_heritage
+						}
+					}
+					OR = {
+						is_pop_type = bureaucrats
+						is_pop_type = clerks
+					}
+				}
+				add = {
+					desc = "POP_INDIA_NATIVE_ADMINISTRATORS"
+					value = 25
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = {
+						culture = {
+							has_discrimination_trait = european_heritage
+						}
+					}
+					NOR = {
+						is_pop_type = bureaucrats
+						is_pop_type = clerks
+					}
+				}
+				multiply = {
+					desc = "POP_INDIA_ADMINISTRATION_PRIVILEGES"
+					value = 0.05
+				}
 			}
 		}
 
@@ -185,154 +313,66 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				OR = {
-					is_marginal = yes
-					AND = {
-						is_in_government = no
-						ig_clout < 0.04
-					}
-				}
+				is_marginal = yes
 			}
 			multiply = {
-				value = 0
+				value = 0.1
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				OR = {
-					is_powerful = yes
-					ig_clout > 0.2
+				is_powerful = yes
+			}
+			multiply = {
+				value = 2
+			}
+		}
+		# More likely with Wealth Voting or Oligarchy
+		if = {
+			limit = {
+				owner = {
+					OR = {
+						has_law = law_type:law_oligarchy
+						has_law = law_type:law_wealth_voting
+					}
 				}
 			}
 			multiply = {
 				value = 2
 			}
 		}
-		# In government
+		# Slightly more likely with LF
 		if = {
 			limit = {
-				is_in_government = yes
-			}
-			multiply = {
-				value = 1.05
-			}
-		}
-		# From 10% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.1
-					ig_clout < 0.2
+				owner = {
+					has_law = law_type:law_laissez_faire
 				}
 			}
 			multiply = {
-				value = 1.5
+				value = 1.25
 			}
 		}
-		# From 20% clout
+		# Less likely before researching Mutual Funds
 		if = {
 			limit = {
-				AND = {
-					ig_clout >= 0.2
-					ig_clout < 0.3
+				owner = {
+					NOT = { has_technology_researched = mutual_funds }
 				}
 			}
 			multiply = {
-				value = 2
+				value = 0.5
 			}
 		}
-		# From 30% clout
+		# Impossible without Currency Standards
 		if = {
 			limit = {
-				AND = {
-					ig_clout >= 0.3
-					ig_clout < 0.4
+				owner = {
+					NOT = { has_technology_researched = currency_standards }
 				}
 			}
 			multiply = {
-				value = 2.5
-			}
-		}
-		# From 40% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.4
-					ig_clout < 0.5
-				}
-			}
-			multiply = {
-				value = 3
-			}
-		}
-		# From 50% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.5
-					ig_clout < 0.6
-				}
-			}
-			multiply = {
-				value = 3.5
-			}
-		}
-		# From 60% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.6
-					ig_clout < 0.7
-				}
-			}
-			multiply = {
-				value = 4
-			}
-		}
-		# From 70% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.7
-					ig_clout < 0.8
-				}
-			}
-			multiply = {
-				value = 4.5
-			}
-		}
-		# From 80% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.8
-					ig_clout < 0.9
-				}
-			}
-			multiply = {
-				value = 5
-			}
-		}
-		# From 90% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.9
-					ig_clout < 0.95
-				}
-			}
-			multiply = {
-				value = 5.5
-			}
-		}
-		# From 95% clout
-		if = {
-			limit = {
-				ig_clout >= 0.95
-			}
-			multiply = {
-				value = 6
+				value = 0
 			}
 		}
 	}
@@ -425,15 +465,6 @@
 	# scope:character is the most popular commander in the IG
 	commander_leader_chance = {
 		value = 0.25
-		if = {
-			limit = {
-				exists = scope:character
-			}
-			multiply = {
-				value = 1
-				add = scope:character.popularity
-				min = 0
-			}
-		}
+		multiply = ig_commander_leader_chance_mult
 	}
 }

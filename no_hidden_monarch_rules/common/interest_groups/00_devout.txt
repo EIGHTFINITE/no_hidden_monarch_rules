@@ -9,6 +9,12 @@
 		ideology_moralist
 		ideology_patriarchal
 	}
+	
+	character_ideologies = {
+		ideology_moderate
+		ideology_traditionalist
+		ideology_legitimist
+	}
 
 	enable = {
 		always = yes
@@ -27,6 +33,9 @@
 				limit = {
 					owner = {
 						country_has_state_religion = rel:protestant
+						NOT = {
+							c:BIC ?= this
+						}
 					}
 				}
 				set_ig_trait = ig_trait:ig_trait_pious_fiction
@@ -40,6 +49,7 @@
 							country_has_state_religion = rel:hindu
 							country_has_state_religion = rel:mahayana
 							country_has_state_religion = rel:theravada
+							country_has_state_religion = rel:confucian
 						}
 					}
 				}
@@ -54,7 +64,7 @@
 					}
 				}
 				set_ig_trait = ig_trait:ig_trait_pious_fiction
-				set_ig_trait = ig_trait:ig_trait_khalsa
+				set_ig_trait = ig_trait:ig_trait_rehat
 				set_ig_trait = ig_trait:ig_trait_kar_seva
 			}
 			else_if = {
@@ -108,6 +118,16 @@
 				set_ig_trait = ig_trait:ig_trait_pious_fiction
 				set_ig_trait = ig_trait:ig_trait_mecelle
 				set_ig_trait = ig_trait:ig_trait_da_wat
+			}
+			else_if = {
+				limit = {
+					owner = {
+						c:BIC ?= this
+					}
+				}
+				set_ig_trait = ig_trait:ig_trait_pious_fiction
+				set_ig_trait = ig_trait:ig_trait_divine_right
+				set_ig_trait = ig_trait:ig_trait_asceticism
 			}
 			else = {
 				set_ig_trait = ig_trait:ig_trait_pious_fiction
@@ -165,6 +185,9 @@
 					country_has_primary_culture = cu:irish
 					c:NRU ?= this
 				}
+				NOT = {
+					c:BIC ?= this
+				}
 			}
 			ig:ig_devout = {
 				set_interest_group_name = ig_anglican_church
@@ -206,6 +229,16 @@
 				set_interest_group_name = ig_church_of_norway
 			}
 		}
+		# Church of Finland
+		else_if = {
+			limit = {
+				country_has_state_religion = rel:protestant
+				country_has_primary_culture = cu:finnish
+			}
+			ig:ig_devout = {
+				set_interest_group_name = ig_church_of_finland
+			}
+		}
 		# Church of Sweden
 		else_if = {
 			limit = {
@@ -219,13 +252,7 @@
 		# Confucian Scholars
 		else_if = {
 			limit = {
-				country_has_state_religion = rel:mahayana
-				OR = {
-					country_has_primary_culture = cu:korean
-					any_primary_culture = {
-						has_discrimination_trait = han_chinese
-					}
-				}
+				country_has_state_religion = rel:confucian
 			}
 			ig:ig_devout = {
 				set_interest_group_name = ig_confucian
@@ -273,7 +300,12 @@
 		}
 		# Evangelical Church
 		else_if = {
-			limit = { country_has_state_religion = rel:protestant }
+			limit = { 
+				country_has_state_religion = rel:protestant 
+				NOT = {
+					c:BIC ?= this
+				}
+			}
 			ig:ig_devout = { 
 				set_interest_group_name = ig_evangelical_church
 			}
@@ -319,11 +351,27 @@
 		}
 		# Hindu Priesthood
 		else_if = {
-			limit = { country_has_state_religion = rel:hindu }
+			limit = { 
+				OR = {
+					country_has_state_religion = rel:hindu 
+					c:BIC ?= this
+				}
+			}
 			ig:ig_devout = {
 				set_interest_group_name = ig_hindu_priesthood
-				remove_ideology = ideology_moralist
-				add_ideology = ideology_hindu_moralist
+				if = {
+					limit = {
+						owner = {
+							c:BIC ?= this
+						}
+					}
+					remove_ideology = ideology_moralist
+					add_ideology = ideology_hindu_moralist_british_india
+				}
+				else = {
+					remove_ideology = ideology_moralist
+					add_ideology = ideology_hindu_moralist
+				}
 			}
 		}
 		# Vajrayana Monks
@@ -353,11 +401,11 @@
 				add_ideology = ideology_buddhist_moralist
 			}
 		}
-		# Sikh Priesthood
+		# Sikh Granthis
 		else_if = {
 			limit = { country_has_state_religion = rel:sikh }
 			ig:ig_devout = {
-				set_interest_group_name = ig_sikh_priesthood
+				set_interest_group_name = ig_granthis
 				remove_ideology = ideology_moralist
 				add_ideology = ideology_sikh_moralist
 			}
@@ -375,8 +423,31 @@
 		}
 	}
 	on_disable = {}
+
+	priority_cultures = { #Country scope
+		rule = {
+			trigger = {
+				c:BIC ?= this
+				any_primary_culture = { 
+					cu:british = this
+				}
+			}
+			cultures = {
+				assamese avadhi baluchi bengali bihari gujarati kannada malayalam marathi oriya panjabi pathan rajput sindi tamil telegu hindustani bundeli pahari gondi bageli chhattisgarhi deccani
+			}
+		}
+	}
+
 	on_character_ig_membership = {
 		if = {
+			limit = {
+				owner = {
+					c:BIC ?= this
+				}
+			}
+			change_character_religion = rel:hindu
+		}
+		else_if = {
 			limit = {
 				NOT = {
 					owner = {
@@ -393,14 +464,24 @@
 
 
 	pop_potential = {
-		has_state_religion = yes
+		OR = {
+			has_state_religion = yes
+			AND = {
+				exists = c:BIC
+				owner ?= c:BIC
+				has_pop_religion = hindu
+			}
+		}
 		NOT = {
 			has_pop_religion = atheist
 		}
 	}
 
 	pop_weight = {
-		value = 25
+		add = {
+			desc = "POP_BASE_ATTRACTION"
+			value = 25
+		}
 
 		add = {
 			desc = "POP_CLERGYMEN"
@@ -552,169 +633,23 @@
 	}
 
 	monarch_weight = {
-		value = 1
+		value = 1.0
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				OR = {
-					is_marginal = yes
-					AND = {
-						is_in_government = no
-						ig_clout < 0.04
-					}
-				}
+				is_marginal = yes
 			}
 			multiply = {
-				value = 0
+				value = 0.1
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				OR = {
-					is_powerful = yes
-					ig_clout > 0.2
-				}
+				is_powerful = yes
 			}
 			multiply = {
 				value = 2
-			}
-		}
-		# In government
-		if = {
-			limit = {
-				is_in_government = yes
-			}
-			multiply = {
-				value = 1.05
-			}
-		}
-		# From 10% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.1
-					ig_clout < 0.2
-				}
-			}
-			multiply = {
-				value = 1.5
-			}
-		}
-		# From 20% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.2
-					ig_clout < 0.3
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# From 30% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.3
-					ig_clout < 0.4
-				}
-			}
-			multiply = {
-				value = 2.5
-			}
-		}
-		# From 40% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.4
-					ig_clout < 0.5
-				}
-			}
-			multiply = {
-				value = 3
-			}
-		}
-		# From 50% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.5
-					ig_clout < 0.6
-				}
-			}
-			multiply = {
-				value = 3.5
-			}
-		}
-		# From 60% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.6
-					ig_clout < 0.7
-				}
-			}
-			multiply = {
-				value = 4
-			}
-		}
-		# From 70% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.7
-					ig_clout < 0.8
-				}
-			}
-			multiply = {
-				value = 4.5
-			}
-		}
-		# From 80% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.8
-					ig_clout < 0.9
-				}
-			}
-			multiply = {
-				value = 5
-			}
-		}
-		# From 90% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.9
-					ig_clout < 0.95
-				}
-			}
-			multiply = {
-				value = 5.5
-			}
-		}
-		# From 95% clout
-		if = {
-			limit = {
-				ig_clout >= 0.95
-			}
-			multiply = {
-				value = 6
-			}
-		}
-		# More likely with Theocracy
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_theocracy
-				}
-			}
-			multiply = {
-				value = 1.25
 			}
 		}
 		# More likely with State Religion
@@ -725,21 +660,21 @@
 				}
 			}
 			multiply = {
-				value = 1.3
+				value = 2
 			}
 		}
-		# More likely with Freedom of Conscience
+		# Less likely without State Religion
 		if = {
 			limit = {
 				owner = {
-					has_law = law_type:law_freedom_of_conscience
+					NOT = { has_law = law_type:law_state_religion }
 				}
 			}
 			multiply = {
-				value = 1.15
+				value = 0.25
 			}
 		}
-		# Less likely with with State Atheism
+		# Basically impossible with State Atheism
 		if = {
 			limit = {
 				owner = {
@@ -747,158 +682,19 @@
 				}
 			}
 			multiply = {
-				value = 0.5
+				value = 0
 			}
 		}
-		# More likely with Religious Schools (Level 1)
+		# Muslims and Theravada more likely to adopt Devout
 		if = {
 			limit = {
-				owner = {
-					has_law = law_type:law_religious_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value < 2
-					}
+				OR = {
+					owner.religion = rel:sunni
+					owner.religion = rel:shiite
+					owner.religion = rel:theravada
 				}
 			}
-			multiply = {
-				value = 1.1
-			}
-		}
-		# More likely with Religious Schools (Level 2)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_religious_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value = 2
-					}
-				}
-			}
-			multiply = {
-				value = 1.2
-			}
-		}
-		# More likely with Religious Schools (Level 3)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_religious_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value = 3
-					}
-				}
-			}
-			multiply = {
-				value = 1.3
-			}
-		}
-		# More likely with Religious Schools (Level 4)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_religious_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value = 4
-					}
-				}
-			}
-			multiply = {
-				value = 1.4
-			}
-		}
-		# More likely with Religious Schools (Level 5)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_religious_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value > 4
-					}
-				}
-			}
-			multiply = {
-				value = 1.5
-			}
-		}
-		# More likely with Charity Hospitals (Level 1)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_charitable_health_system
-					institution_investment_level = {
-						institution = institution_health_system
-						value < 2
-					}
-				}
-			}
-			multiply = {
-				value = 1.1
-			}
-		}
-		# More likely with Charity Hospitals (Level 2)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_charitable_health_system
-					institution_investment_level = {
-						institution = institution_health_system
-						value = 2
-					}
-				}
-			}
-			multiply = {
-				value = 1.2
-			}
-		}
-		# More likely with Charity Hospitals (Level 3)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_charitable_health_system
-					institution_investment_level = {
-						institution = institution_health_system
-						value = 3
-					}
-				}
-			}
-			multiply = {
-				value = 1.3
-			}
-		}
-		# More likely with Charity Hospitals (Level 4)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_charitable_health_system
-					institution_investment_level = {
-						institution = institution_health_system
-						value = 4
-					}
-				}
-			}
-			multiply = {
-				value = 1.4
-			}
-		}
-		# More likely with Charity Hospitals (Level 5)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_charitable_health_system
-					institution_investment_level = {
-						institution = institution_health_system
-						value > 4
-					}
-				}
-			}
-			multiply = {
-				value = 1.5
-			}
+			multiply = 2
 		}
 	}
 
@@ -990,15 +786,6 @@
 	# scope:character is the most popular commander in the IG
 	commander_leader_chance = {
 		value = 0.25
-		if = {
-			limit = {
-				exists = scope:character
-			}
-			multiply = {
-				value = 1
-				add = scope:character.popularity
-				min = 0
-			}
-		}
+		multiply = ig_commander_leader_chance_mult
 	}
 }
