@@ -17,7 +17,6 @@
 		ideology_radical
 		ideology_reformer
 		ideology_sovereignist_leader
-		ideology_orleanist
 		ideology_despotic_utopian
 		ideology_humanitarian
 		ideology_utopian
@@ -35,7 +34,8 @@
 	}
 
 	on_enable = {
-		ig:ig_intelligentsia = {
+		ig:ig_intelligentsia ?= {
+			### Specific IG traits
 			if = {
 				limit = {
 					owner = { c:CHI ?= this }
@@ -81,13 +81,12 @@
 				set_ig_trait = ig_trait:ig_trait_propagandists
 			}
 		}
-
 		# Papal Intellegentsia
 		if = {
 			limit = {
 				c:PAP ?= this
 			}
-			ig:ig_intelligentsia = {
+			ig:ig_intelligentsia ?= {
 				remove_ideology = ideology_anti_clerical
 			}
 		}
@@ -96,7 +95,7 @@
 			limit = {
 				country_has_primary_culture = cu:hawaiian
 			}
-			ig:ig_intelligentsia = {
+			ig:ig_intelligentsia ?= {
 				set_interest_group_name = ig_hawaiian_democrats
 			}
 		}
@@ -104,10 +103,10 @@
 		else_if = {
 			limit = {
 				any_primary_culture = {
-					has_discrimination_trait = han_chinese
+					has_discrimination_trait = heritage_han
 				}
 			}
-			ig:ig_intelligentsia = {
+			ig:ig_intelligentsia ?= {
 				set_interest_group_name = ig_literati
 				remove_ideology = ideology_anti_clerical
 			}
@@ -118,7 +117,7 @@
 				has_dlc_feature = rp1_content
 				c:BRZ ?= THIS
 			}
-			ig:ig_intelligentsia = {
+			ig:ig_intelligentsia ?= {
 				set_ig_trait = ig_trait:ig_trait_brasilidade
 				set_ig_trait = ig_trait:ig_trait_bachareis
 				set_ig_trait = ig_trait:ig_trait_social_criticism
@@ -127,12 +126,21 @@
 				add_ideology = ideology_constitutionalist
 			}
 		}
+		# Philippines Intelligentsia
+		else_if = {
+			limit = {
+				c:PHI ?= this
+			}
+			ig:ig_intelligentsia ?= {
+				set_interest_group_name = ig_ilustrados
+			}
+		}
 		# India
 		else_if = {
 			limit = {
 				c:BIC ?= THIS
 			}
-			ig:ig_intelligentsia = {
+			ig:ig_intelligentsia ?= {
 				set_interest_group_name = ig_civil_servants
 
 				remove_ideology = ideology_republican
@@ -144,18 +152,29 @@
 			limit = {
 				OR = {
 					c:GBR ?= THIS
-					c:JAP ?= THIS
+					c:POR ?= THIS
+					c:SPA ?= THIS
+					c:AUS ?= THIS
 					any_primary_culture = { # Princely States and Nepal
-						has_discrimination_trait = south_asian_heritage
+						has_discrimination_trait_group = heritage_group_south_asian
 					}
 				}
 			}
-			ig:ig_intelligentsia = {
+			ig:ig_intelligentsia ?= {
 				remove_ideology = ideology_republican
 				add_ideology = ideology_constitutionalist
 			}
 		}
-
+		if = {
+			limit = {
+				country_has_primary_culture = cu:japanese
+			}
+			ig:ig_intelligentsia ?= {
+				set_interest_group_name = ig_rangakusha
+				remove_ideology = ideology_republican
+				add_ideology = ideology_rangaku
+			}
+		}
 		if = {
 			limit = {
 				has_technology_researched = feminism
@@ -180,6 +199,43 @@
 			}
 			cultures = {
 				assamese avadhi baluchi bengali bihari gujarati kannada malayalam marathi oriya panjabi pathan rajput sindi tamil telegu hindustani bundeli pahari gondi bageli chhattisgarhi deccani
+			}
+		}
+		rule = {
+			trigger = {
+				c:ZAN ?= this
+				any_primary_culture = {
+					cu:bedouin = this
+				}
+			}
+			cultures = {
+				swahili bedouin
+			}
+		}
+		rule = {
+			trigger = {
+				c:PHI ?= this
+				NOT = { has_variable = je_philippines_main_reliance_happened }
+				NOT = { any_primary_culture = { cu:filipino = this } }
+				NOT = { any_primary_culture = { cu:filipino_hispanophone = this } }
+				any_primary_culture = { cu:spanish = this }
+			}
+			cultures = {
+				spanish filipino_mestizo
+			}
+		}
+		rule = {
+			trigger = {
+				c:PHI ?= this
+				any_primary_culture = {
+					AND = {
+						cu:spanish = this
+						cu:filipino_hispanophone = this
+					}
+				}
+			}
+			cultures = {
+				spanish filipino_hispanophone
 			}
 		}
 	}
@@ -236,18 +292,43 @@
 			if = {
 				limit = {
 					is_pop_type = aristocrats
+					owner = {
+						has_technology_researched = academia
+					}
 				}
 				if = {
 					limit = {
 						owner = {
-							has_law = law_type:law_hereditary_bureaucrats
+							has_law_or_variant = law_type:law_hereditary_bureaucrats
 						}
 					}
 					value = 75
 				}
+				else_if = {
+					limit = {
+						owner = {
+							country_has_primary_culture = cu:french
+						}
+					}
+					value = 50
+				}
 				else = {
 					value = 25
 				}
+			}
+		}
+
+		add = {
+			desc = "je_hungarian_revolution"
+			if = {
+				limit = {
+					is_pop_type = aristocrats
+					culture = cu:hungarian
+					owner ?= {
+						has_journal_entry = je_hungarian_revolution
+					}
+				}
+				value = 50
 			}
 		}
 
@@ -285,7 +366,7 @@
 			if = {
 				limit = {
 					culture = {
-						has_discrimination_trait = european_heritage
+						has_discrimination_trait_group = heritage_group_european
 					}
 				}
 				multiply = {
@@ -399,229 +480,52 @@
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				OR = {
-					is_marginal = yes
-					AND = {
-						is_in_government = no
-						ig_clout < 0.04
-					}
-				}
+				ig_counts_as_marginal = yes
 			}
 			multiply = {
-				value = 0
+				value = 0.1
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				OR = {
-					is_powerful = yes
-					ig_clout > 0.2
-				}
+				is_powerful = yes
 			}
 			multiply = {
 				value = 2
 			}
 		}
-		# In government
+		# Much more likely with Technocracy
 		if = {
 			limit = {
-				is_in_government = no
-			}
-			multiply = {
-				value = 0.9
-			}
-		}
-		# From 10% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.1
-					ig_clout < 0.2
-				}
-			}
-			multiply = {
-				value = 1.5
-			}
-		}
-		# From 20% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.2
-					ig_clout < 0.3
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# From 30% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.3
-					ig_clout < 0.4
-				}
-			}
-			multiply = {
-				value = 2.5
-			}
-		}
-		# From 40% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.4
-					ig_clout < 0.5
+				owner = {
+					has_law_or_variant = law_type:law_technocracy
 				}
 			}
 			multiply = {
 				value = 3
 			}
 		}
-		# From 50% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.5
-					ig_clout < 0.6
-				}
-			}
-			multiply = {
-				value = 3.5
-			}
-		}
-		# From 60% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.6
-					ig_clout < 0.7
-				}
-			}
-			multiply = {
-				value = 4
-			}
-		}
-		# From 70% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.7
-					ig_clout < 0.8
-				}
-			}
-			multiply = {
-				value = 4.5
-			}
-		}
-		# From 80% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.8
-					ig_clout < 0.9
-				}
-			}
-			multiply = {
-				value = 5
-			}
-		}
-		# From 90% clout
-		if = {
-			limit = {
-				AND = {
-					ig_clout >= 0.9
-					ig_clout < 0.95
-				}
-			}
-			multiply = {
-				value = 5.5
-			}
-		}
-		# From 95% clout
-		if = {
-			limit = {
-				ig_clout >= 0.95
-			}
-			multiply = {
-				value = 6
-			}
-		}
-		# More likely with Private Schools (Level 1)
+		# More likely with Appointed Bureaucrats
 		if = {
 			limit = {
 				owner = {
-					has_law = law_type:law_private_schools
-					NOT = { institution_investment_level = {
-						institution = institution_schools
-						value > 1
-					} }
-				}
-			}
-			multiply = {
-				value = 1.1
-			}
-		}
-		# More likely with Private Schools (Level 2)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_private_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value = 2
-					}
-				}
-			}
-			multiply = {
-				value = 1.2
-			}
-		}
-		# More likely with Private Schools (Level 3)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_private_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value = 3
-					}
-				}
-			}
-			multiply = {
-				value = 1.3
-			}
-		}
-		# More likely with Private Schools (Level 4)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_private_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value = 4
-					}
-				}
-			}
-			multiply = {
-				value = 1.4
-			}
-		}
-		# More likely with Private Schools (Level 5)
-		if = {
-			limit = {
-				owner = {
-					has_law = law_type:law_private_schools
-					institution_investment_level = {
-						institution = institution_schools
-						value > 4
-					}
+					has_law_or_variant = law_type:law_appointed_bureaucrats
 				}
 			}
 			multiply = {
 				value = 1.5
+			}
+		}
+		# Impossible without Empiricism
+		if = {
+			limit = {
+				owner = {
+					NOT = { has_technology_researched = empiricism }
+				}
+			}
+			multiply = {
+				value = 0
 			}
 		}
 	}
@@ -632,8 +536,8 @@
 		# Agitators will never be part of a marginalized IG
 		if = {
 			limit = {
-				owner.ig:ig_intelligentsia = {
-					is_marginal = yes
+				owner.ig:ig_intelligentsia ?= {
+					ig_counts_as_marginal = yes
 				}
 			}
 			multiply = {
@@ -645,16 +549,20 @@
 	commander_weight = {
 		value = 1.0
 	}
+	
+	magnate_weight = {
+		value = 1.0
+	}	
 
 	executive_weight = {
 		value = 2.0
-		
+
 		# The company owning BIC should not get non-industrialist executives
 		if = {
 			limit = {
 				exists = scope:company
 				exists = c:BIC
-				c:BIC = {
+				c:BIC ?= {
 					exists = owning_company
 					owning_company = scope:company
 				}
@@ -677,18 +585,26 @@
 		value = 0.0
 	}
 
+	female_monarch_chance = {
+		value = 0.025
+	}
+
 	female_politician_chance = {
 		value = 0.0
+
 
 		if = {
 			limit = {
 				owner = {
-					has_law = law_type:law_womens_suffrage
+					has_law_or_variant = law_type:law_womens_suffrage
 				}
-
+				law_stance = {
+					law = law_type:law_womens_suffrage
+					value >= approve
+				}
 			}
 			add = {
-				value = 0.035
+				value = 0.05
 			}
 		}
 	}
@@ -699,7 +615,7 @@
 		if = {
 			limit = {
 				owner = {
-					has_law = law_type:law_women_own_property
+					has_law_or_variant = law_type:law_women_own_property
 				}
 
 			}
@@ -711,7 +627,7 @@
 		if = {
 			limit = {
 				owner = {
-					has_law = law_type:law_women_in_the_workplace
+					has_law_or_variant = law_type:law_women_in_the_workplace
 				}
 
 			}
@@ -723,7 +639,7 @@
 		if = {
 			limit = {
 				owner = {
-					has_law = law_type:law_womens_suffrage
+					has_law_or_variant = law_type:law_womens_suffrage
 				}
 
 			}
@@ -733,16 +649,30 @@
 		}
 	}
 
-	# The chance that a commander belonging to this IG takes over leadership when it changes
-	# scope:character is the most popular commander in the IG
-	commander_leader_chance = {
-		value = 0.25
-		multiply = ig_commander_leader_chance_mult
+	# Multiplier applied to the weight for an appropriate commander will be selected from the character pool to lead the IG
+	# root = interest group
+	commander_leader_weight = {
+		value = 0.5
 	}
+	
+	# Multiplier applied to the weight for an appropriate magnate will be selected from the character pool to lead the IG
+	# root = interest group
+	magnate_leader_weight = {
+		value = 0.5
+		if = {
+			limit = {
+				c:JAP ?= owner
+				NOT = {
+					has_variable = japan_restoration_complete
+				}
+			}
+			add = 5
+		}
+	}	
 
-	# The chance that a executive belonging to this IG takes over leadership when it changes
-	# scope:character is the most popular executive in the IG
-	executive_leader_chance = {
+	# Multiplier applied to the weight for an appropriate executive will be selected from the character pool to lead the IG
+	# root = interest group
+	executive_leader_weight = {
 		value = 0.5
 	}
 }
