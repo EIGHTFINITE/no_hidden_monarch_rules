@@ -646,6 +646,28 @@
 				value = 6
 			}
 		}
+		# More likely with Corporate State
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_corporate_state
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
+		# More likely with Social Monarchy
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_social_monarchy
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
 	}
 
 	agitator_weight = {
