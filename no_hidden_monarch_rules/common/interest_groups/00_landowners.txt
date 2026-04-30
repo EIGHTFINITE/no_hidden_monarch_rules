@@ -555,20 +555,29 @@
 	}
 
 	monarch_weight = {
-		value = 1.5 # inherently likely
+		value = 1
 		# Monarch is not likely to adopt a marginal IG
 		if = {
 			limit = {
-				ig_counts_as_marginal = yes
+				OR = {
+					ig_counts_as_marginal = yes
+					AND = {
+						is_in_government = no
+						ig_clout < 0.04
+					}
+				}
 			}
 			multiply = {
-				value = 0.1
+				value = 0.00001
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
 		if = {
 			limit = {
-				is_powerful = yes
+				OR = {
+					is_powerful = yes
+					ig_clout > 0.2
+				}
 			}
 			multiply = {
 				value = 2
