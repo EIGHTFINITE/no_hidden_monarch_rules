@@ -711,6 +711,17 @@
 				value = 1.5
 			}
 		}
+		# More likely with Sef Paternalism
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_chiefs_distribute_aid
+				}
+			}
+			multiply = {
+				value = 1.1
+			}
+		}
 	}
 
 	agitator_weight = {
