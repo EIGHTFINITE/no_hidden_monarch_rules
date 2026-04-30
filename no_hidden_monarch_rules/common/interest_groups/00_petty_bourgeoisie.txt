@@ -743,6 +743,81 @@
 				value = 1.5
 			}
 		}
+		# More likely with National Guard (Level 1)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_national_guard
+					NOT = { institution_investment_level = {
+						institution = institution_home_affairs
+						value > 1
+					} }
+				}
+			}
+			multiply = {
+				value = 1.05
+			}
+		}
+		# More likely with National Guard (Level 2)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_national_guard
+					institution_investment_level = {
+						institution = institution_home_affairs
+						value = 2
+					}
+				}
+			}
+			multiply = {
+				value = 1.1
+			}
+		}
+		# More likely with National Guard (Level 3)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_national_guard
+					institution_investment_level = {
+						institution = institution_home_affairs
+						value = 3
+					}
+				}
+			}
+			multiply = {
+				value = 1.15
+			}
+		}
+		# More likely with National Guard (Level 4)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_national_guard
+					institution_investment_level = {
+						institution = institution_home_affairs
+						value = 4
+					}
+				}
+			}
+			multiply = {
+				value = 1.2
+			}
+		}
+		# More likely with National Guard (Level 5)
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_national_guard
+					institution_investment_level = {
+						institution = institution_home_affairs
+						value > 4
+					}
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
 	}
 
 	agitator_weight = {
