@@ -1,8 +1,8 @@
 {
-  "name" : "no_hidden_monarch_rules",
+  "name" : "No Hidden Monarch Interest Group Rules",
   "id" : "",
   "version" : "1.0",
-  "supported_game_version" : "1.9.*",
+  "supported_game_version" : "",
   "short_description" : "",
   "tags" : ["Balance","Fixes","Gameplay","Interest Groups"],
   "relationships" : [],
