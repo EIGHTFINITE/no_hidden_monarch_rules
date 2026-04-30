@@ -394,28 +394,6 @@ ig_rural_folk = {
 				value = 2
 			}
 		}
-		# More likely with Homesteading
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_peasant_proprietorship
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# Impossible with Serfdom
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_serfdom
-				}
-			}
-			multiply = {
-				value = 0
-			}
-		}
 	}
 
 	agitator_weight = {

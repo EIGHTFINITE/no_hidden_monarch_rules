@@ -510,49 +510,6 @@
 				value = 2
 			}
 		}
-		# Monarch more likely to be Armed Forces under an autocratic or oligarchic regime
-		if = {
-			limit = {
-				owner = {
-					OR = {
-						has_law_or_variant = law_type:law_oligarchy
-						has_law_or_variant = law_type:law_autocracy
-						has_law_or_variant = law_type:law_single_party_state
-					}
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# Monarch is less likely to be Armed forces in a democratic monarchy
-		if = {
-			limit = {
-				owner = {
-					OR = {
-						has_law_or_variant = law_type:law_universal_suffrage
-						has_law_or_variant = law_type:law_census_voting
-					}
-				}
-			}
-			multiply = {
-				value = 0.5
-			}
-		}
-		# Less likely without Professional Army or Mass Conscription
-		if = {
-			limit = {
-				owner = {
-					NOR = {
-						has_law_or_variant = law_type:law_professional_army
-						has_law_or_variant = law_type:law_mass_conscription
-					}
-				}
-			}
-			multiply = {
-				value = 0.5
-			}
-		}
 	}
 
 	agitator_weight = {

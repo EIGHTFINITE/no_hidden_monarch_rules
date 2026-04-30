@@ -520,28 +520,6 @@
 				value = 2
 			}
 		}
-		# More likely with Elected Bureaucrats
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_elected_bureaucrats
-				}
-			}
-			multiply = {
-				value = 1.5
-			}
-		}
-		# More likely with ethnostate
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_ethnostate
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
 	}
 
 	agitator_weight = {

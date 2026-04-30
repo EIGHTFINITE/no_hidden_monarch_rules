@@ -308,28 +308,6 @@
 				value = 2
 			}
 		}
-		# More likely with Worker's Protections
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_worker_protections
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# Impossible with No Workers Rights
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_no_workers_rights
-				}
-			}
-			multiply = {
-				value = 0
-			}
-		}
 	}
 
 	agitator_weight = {

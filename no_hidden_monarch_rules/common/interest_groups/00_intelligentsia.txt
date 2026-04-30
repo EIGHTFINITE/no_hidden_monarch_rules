@@ -504,39 +504,6 @@
 				value = 2
 			}
 		}
-		# Much more likely with Technocracy
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_technocracy
-				}
-			}
-			multiply = {
-				value = 3
-			}
-		}
-		# More likely with Appointed Bureaucrats
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_appointed_bureaucrats
-				}
-			}
-			multiply = {
-				value = 1.5
-			}
-		}
-		# Impossible without Empiricism
-		if = {
-			limit = {
-				owner = {
-					NOT = { has_technology_researched = empiricism }
-				}
-			}
-			multiply = {
-				value = 0
-			}
-		}
 	}
 
 	agitator_weight = {

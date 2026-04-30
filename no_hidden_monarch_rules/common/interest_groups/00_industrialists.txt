@@ -436,53 +436,6 @@
 				value = 2
 			}
 		}
-		# More likely with Wealth Voting or Oligarchy
-		if = {
-			limit = {
-				owner = {
-					OR = {
-						has_law_or_variant = law_type:law_oligarchy
-						has_law_or_variant = law_type:law_wealth_voting
-					}
-				}
-			}
-			multiply = {
-				value = 2
-			}
-		}
-		# Slightly more likely with LF
-		if = {
-			limit = {
-				owner = {
-					has_law_or_variant = law_type:law_laissez_faire
-				}
-			}
-			multiply = {
-				value = 1.25
-			}
-		}
-		# Less likely before researching Mutual Funds
-		if = {
-			limit = {
-				owner = {
-					NOT = { has_technology_researched = mutual_funds }
-				}
-			}
-			multiply = {
-				value = 0.5
-			}
-		}
-		# Impossible without Currency Standards
-		if = {
-			limit = {
-				owner = {
-					NOT = { has_technology_researched = currency_standards }
-				}
-			}
-			multiply = {
-				value = 0
-			}
-		}
 	}
 
 	agitator_weight = {
