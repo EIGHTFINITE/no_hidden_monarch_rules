@@ -839,6 +839,39 @@
 				value = 1.25
 			}
 		}
+		# More likely with Debt Slavery
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_debt_slavery
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
+		# More likely with Slave Trade
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_slave_trade
+				}
+			}
+			multiply = {
+				value = 1.5
+			}
+		}
+		# More likely with Legacy Slavery
+		if = {
+			limit = {
+				owner = {
+					has_law = law_type:law_legacy_slavery
+				}
+			}
+			multiply = {
+				value = 1.25
+			}
+		}
 	}
 
 	agitator_weight = {
