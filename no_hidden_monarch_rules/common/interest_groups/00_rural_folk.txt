@@ -379,7 +379,7 @@ ig_rural_folk = {
 				}
 			}
 			multiply = {
-				value = 0.00001
+				value = 0
 			}
 		}
 		# Monarch is more likely to adopt a Powerful IG
